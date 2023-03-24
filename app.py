@@ -1,26 +1,37 @@
-from flask import Flask
+from flask import Flask,render_template,request,jsonify
 
 app=Flask(__name__)
+
+@app.route('/',methods=['GET','POST'])
+def home_page():
+    return render_template("index.html")
+
 
 @app.route("/")
 def hello_world():
     return "<h1>Hello ,world </h1>"
 
-@app.route("/hello_world1")
-def hello_world1():
-    return "<h1>Hello ,world ........Deepali</h1>"
 
-@app.route("/hello_world2")
-def hello_world2():
-    return "<h1>Hello ,world.....Waghmare </h1>"
+#creating method for performing operation like add,sub,div
+@app.route('/math',methods=['POST'])
+def math_operation():
+    if(request.method=='POST'):
+        ops=request.form['operation'] 
+        num1=int(request.form['num1'])
+        num2=int(request.form['num2'])
+    if(ops=='subtract'):
+            r=num1-num2
+            result='The subtract of '+'\t'+str(num1)+'\t'+'and'+'\t'+str(num2)+'is'+str(r)
+    if(ops=='multiply'):
+            r=num1*num2
+            result='The multiplyof '+'\t'+str(num1)+'\t'+'and'+'\t'+str(num2)+'is'+str(r)
+    if(ops=='divide'):
+            r=num1/num2
+            result='The divide of '+'\t'+str(num1)+'\t'+'and'+'\t'+str(num2)+'is'+str(r)
 
-@app.route("/test")
-def test():
-    a=5+6
-    return "<h1>this is my test function testing the flask and working flask.........</h2>{}".format(a)
+    return render_template('result.html',result=result)  
 
-# @app.route("/test2")
-# def test2():
+
 
 
 if __name__=="__main__":
